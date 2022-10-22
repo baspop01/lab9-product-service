@@ -1,4 +1,4 @@
-package com.example.lab9productservice.rest;
+package com.example.lab9productservice.command.rest;
 
 import com.example.lab9productservice.command.CreateProductCommand;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -12,11 +12,11 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/products")
-public class ProductController {
+public class ProductCommandController {
     private final CommandGateway commandGateway;
 
     @Autowired
-    public ProductController(CommandGateway commandGateway){
+    public ProductCommandController(CommandGateway commandGateway){
         this.commandGateway = commandGateway;
     }
     @PostMapping

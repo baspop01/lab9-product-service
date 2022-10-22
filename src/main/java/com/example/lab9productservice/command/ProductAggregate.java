@@ -1,6 +1,6 @@
 package com.example.lab9productservice.command;
 
-import com.example.lab9productservice.event.ProductCreatedEvent;
+import com.example.lab9productservice.core.event.ProductCreatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;

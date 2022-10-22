@@ -1,4 +1,4 @@
-package com.example.lab9productservice.event;
+package com.example.lab9productservice.core.event;
 
 import lombok.Data;
 
