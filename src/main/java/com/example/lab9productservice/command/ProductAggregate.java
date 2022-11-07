@@ -1,5 +1,7 @@
 package com.example.lab9productservice.command;
 
+import com.example.lab11core.core.command.ReserveProductCommand;
+import com.example.lab11core.core.event.ProductReservedEvent;
 import com.example.lab9productservice.core.event.ProductCreatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -36,11 +38,30 @@ public class ProductAggregate {
         BeanUtils.copyProperties(createProductCommand, productCreatedEvent);
         AggregateLifecycle.apply(productCreatedEvent);
     }
+
+    @CommandHandler
+    public void handler(ReserveProductCommand reserveProductCommand){
+        if (quantity < reserveProductCommand.getQuantity()){
+            throw new IllegalArgumentException("Insufficient umber of items in stock");
+        }
+        ProductReservedEvent productReservedEvent = ProductReservedEvent.builder()
+                .orderId(reserveProductCommand.getOrderId())
+                .productId(reserveProductCommand.getProductId())
+                .quantity(reserveProductCommand.getQuantity())
+                .userId(reserveProductCommand.getUserId())
+                .build();
+        AggregateLifecycle.apply(productReservedEvent);
+    }
     @EventSourcingHandler
     public void on(ProductCreatedEvent productCreatedEvent){
         this.productId = productCreatedEvent.getProductId();
         this.title = productCreatedEvent.getTitle();
         this.price = productCreatedEvent.getPrice();
         this.quantity = productCreatedEvent.getQuantity();
+    }
+
+    @EventSourcingHandler
+    public void on(ProductReservedEvent productReservedEvent){
+        this.quantity -= productReservedEvent.getQuantity();
     }
 }
